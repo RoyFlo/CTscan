@@ -66,7 +66,7 @@ def plot():
     fig.tight_layout()
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.get_tk_widget().grid(row=2, columnspan=5)
-    Label(window, text=rerror, font=("Ariel", 10), fg="blue").grid(row=3, sticky=SE)
+    Label(window, text=rerror, font=("Ariel", 10), fg="red").grid(row=3, sticky=SE)
     canvas.draw()
 
 button1 = Button(window, text="PLOT", bg="red", command=plot)
