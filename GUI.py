@@ -10,7 +10,7 @@ window = Tk()
 window.geometry("500x600")
 window.title("CT Scanner")
 
-Label(window, text="IMAGE SELECT").grid(row=0)
+Label(window, text="IMAGE SELECT:", font=("Ariel", 12), fg="blue").grid(row=0)
 
 this = "Image1.png"
 def iValue(value):
@@ -66,10 +66,10 @@ def plot():
     fig.tight_layout()
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.get_tk_widget().grid(row=2, columnspan=5)
-    Label(window, text=rerror).grid(row=3, sticky=SE)
+    Label(window, text=rerror, font=("Ariel", 10), fg="blue").grid(row=3, sticky=SE)
     canvas.draw()
 
-button1 = Button(window, text="PLOT", command=plot)
+button1 = Button(window, text="PLOT", bg="red", command=plot)
 button1.grid(row=1, column=2)
 
 
