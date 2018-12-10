@@ -54,6 +54,7 @@ def plot():
     reconstruction_fbp = skt.iradon(sinogram, theta=theta, circle=True)
     error = reconstruction_fbp - image2
     print('FBP rms reconstruction error: %.3g' % np.sqrt(np.mean(error ** 2)))
+    rerror = 'FBP rms reconstruction error: %.3g' % np.sqrt(np.mean(error ** 2))
     imkwargs = dict(vmin=-0.2, vmax=0.2)
 
     a3.imshow(reconstruction_fbp, cmap=plt.cm.Greys_r)
@@ -65,6 +66,7 @@ def plot():
     fig.tight_layout()
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.get_tk_widget().grid(row=2, columnspan=5)
+    Label(window, text=rerror).grid(row=3, sticky=SE)
     canvas.draw()
 
 button1 = Button(window, text="PLOT", command=plot)
