@@ -10,15 +10,15 @@ window = Tk()
 window.geometry("500x600")
 window.title("CT Scanner")
 
-Label(window, text="IMAGE SELECT:", font=("Ariel", 12), fg="blue").grid(row=0)
+Label(window, text="Select an image from the list below. Then hit Transform", font=("Ariel", 12), fg="blue").grid(row=0)
 
 this = "Image1.png"
 def iValue(value):
     global this
     this = value+".png"
-    print(this)
+    print("You have selected " + this)
 
-iList = ["Image1", "Image2", "Image3", "Image4", "Image5"]
+iList = ["SheppLogan_Phantom", "Image1", "Image2", "Image3", "Image4", "Image5"]
 var=StringVar()
 var.set("Image1")
 set1 = OptionMenu(window, var, *iList, command=iValue)
@@ -29,19 +29,20 @@ fig = Figure(figsize=(5, 5))
 canvas = FigureCanvasTkAgg(fig, master=window)
 
 def plot():
-    print("Plotting")
-    print("This = " + this)
+    print("\nSimulating using " + this + " using filtered Back Projection (FBP) for reconstruction")
     image = imread(this, as_gray=True)
-    image2 = skt.rescale(image, scale=0.4, mode='reflect', multichannel=False)
+    image2 = skt.rescale(image, scale=0.5, mode='reflect', multichannel=False)
 
     a1 = fig.add_subplot(221)
     a2 = fig.add_subplot(222)
 
     a1.imshow(image2, cmap=plt.cm.Greys_r)
-    a1.set_title("Original")
+    a1.set_title("Original Image")
 
+    print("Creating sinogram...")
     theta = np.linspace(0., 180., max(image2.shape), endpoint=False)
     sinogram = skt.radon(image2, theta=theta, circle=True)
+    print("Sinogram complete")
 
     a2.imshow(sinogram, cmap=plt.cm.Greys_r, extent=(0, 180, 0, sinogram.shape[0]), aspect='auto')
     a2.set_title("Radon transform\n(Sinogram)")
@@ -58,10 +59,10 @@ def plot():
     imkwargs = dict(vmin=-0.2, vmax=0.2)
 
     a3.imshow(reconstruction_fbp, cmap=plt.cm.Greys_r)
-    a3.set_title('Reconstruction\nFiltered back porjection')
+    a3.set_title('Reconstruction with\nFiltered back projection')
 
     a4.imshow(reconstruction_fbp - image2, cmap=plt.cm.Greys_r, **imkwargs)
-    a4.set_title('Reconstruction error\nFiltered back projection')
+    a4.set_title('Reconstruction error\ndifference')
 
     fig.tight_layout()
     canvas = FigureCanvasTkAgg(fig, master=window)
@@ -69,8 +70,7 @@ def plot():
     Label(window, text=rerror, font=("Ariel", 10), fg="red").grid(row=3, sticky=SE)
     canvas.draw()
 
-button1 = Button(window, text="PLOT", bg="red", command=plot)
+button1 = Button(window, text="Simulate", bg="red", command=plot)
 button1.grid(row=1, column=2)
-
 
 window.mainloop()
