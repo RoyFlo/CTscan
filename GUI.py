@@ -29,13 +29,13 @@ fig = Figure(figsize=(7, 7))
 canvas = FigureCanvasTkAgg(fig, master=window)
 
 def plot():
-    degree = 180
-    resolution = 10
+    resoScale = 2
+    #numofSlices = 180
 
     print("\nSimulating using " + this + " using Filtered Back Projection (FBP) for reconstruction")
     image = imread(this, as_gray=True)
-    image2 = skt.rescale(image, scale=1/resolution, mode='reflect', multichannel=False)
-    scaledres = int((image.shape[0])/resolution)
+    image2 = skt.rescale(image, scale=1/resoScale, mode='reflect', multichannel=False)
+    scaledres = int((image.shape[0])/resoScale)
     print("Scanner resolution is set to " + str(scaledres) + " x " + str(scaledres))
 
     a1 = fig.add_subplot(221)
@@ -44,8 +44,11 @@ def plot():
     a1.imshow(image, cmap=plt.cm.Greys_r)
     a1.set_title("Original Image")
 
+    numofSlices = max(image2.shape)
+
     print("Creating sinogram...")
-    theta = np.linspace(0., degree, max(image2.shape), endpoint=False)
+    #theta = np.linspace(0., degree, max(image2.shape), endpoint=False)
+    theta = np.linspace(0., 180, numofSlices, endpoint=False)
     sinogram = skt.radon(image2, theta=theta, circle=True)
     print("Sinogram complete")
 
