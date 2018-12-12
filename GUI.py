@@ -32,7 +32,7 @@ def sValue(value):
     scale = value
     print(scale)
 
-iList = ["Image1", "Image2", "Image3", "Image4", "Image5", "SheppLogan_Phantom"]
+iList = ["Image1", "Image2", "Image3", "Image4", "Image5"]
 sList = [1,2,3,4,5,6,7,8,9,10]
 var1=StringVar()
 var1.set("Image1")
