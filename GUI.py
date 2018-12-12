@@ -11,7 +11,8 @@ window.geometry("700x800")
 window.title("CT Scanner")
 
 Label(window, text="Select an image from the list below.", font=("Ariel", 12), fg="blue").grid(row=0)
-Label(window, text="Select the scale. Then hit Simulate", font=("Ariel", 12), fg="blue").grid(row=0, column=1)
+Label(window, text="Select the scale.", font=("Ariel", 12), fg="blue").grid(row=0, column=1)
+Label(window, text="Then hit Simulate", font=("Ariel", 12), fg="blue").grid(row=0, column=3)
 
 this = "Image1.png"
 scale = 1
