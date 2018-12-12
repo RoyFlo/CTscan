@@ -7,7 +7,7 @@ from skimage.io import imread
 import skimage.transform as skt
 
 window = Tk()
-window.geometry("500x600")
+window.geometry("700x800")
 window.title("CT Scanner")
 
 Label(window, text="Select an image from the list below. Then hit Transform", font=("Ariel", 12), fg="blue").grid(row=0)
@@ -18,29 +18,34 @@ def iValue(value):
     this = value+".png"
     print("You have selected " + this)
 
-iList = ["SheppLogan_Phantom", "Image1", "Image2", "Image3", "Image4", "Image5"]
+iList = ["SheppLogan_Phantom", "Image1", "Image2", "Image3", "Image4", "Image5", "test2"]
 var=StringVar()
 var.set("Image1")
 set1 = OptionMenu(window, var, *iList, command=iValue)
 set1.configure(font=("Ariel"))
 set1.grid(row=1, column=0)
 
-fig = Figure(figsize=(5, 5))
+fig = Figure(figsize=(7, 7))
 canvas = FigureCanvasTkAgg(fig, master=window)
 
 def plot():
-    print("\nSimulating using " + this + " using filtered Back Projection (FBP) for reconstruction")
+    degree = 180
+    resolution = 10
+
+    print("\nSimulating using " + this + " using Filtered Back Projection (FBP) for reconstruction")
     image = imread(this, as_gray=True)
-    image2 = skt.rescale(image, scale=0.5, mode='reflect', multichannel=False)
+    image2 = skt.rescale(image, scale=1/resolution, mode='reflect', multichannel=False)
+    scaledres = int((image.shape[0])/resolution)
+    print("Scanner resolution is set to " + str(scaledres) + " x " + str(scaledres))
 
     a1 = fig.add_subplot(221)
     a2 = fig.add_subplot(222)
 
-    a1.imshow(image2, cmap=plt.cm.Greys_r)
+    a1.imshow(image, cmap=plt.cm.Greys_r)
     a1.set_title("Original Image")
 
     print("Creating sinogram...")
-    theta = np.linspace(0., 180., max(image2.shape), endpoint=False)
+    theta = np.linspace(0., degree, max(image2.shape), endpoint=False)
     sinogram = skt.radon(image2, theta=theta, circle=True)
     print("Sinogram complete")
 
@@ -52,7 +57,10 @@ def plot():
     a3 = fig.add_subplot(223)
     a4 = fig.add_subplot(224)
 
+    print("Image being reconstructed")
     reconstruction_fbp = skt.iradon(sinogram, theta=theta, circle=True)
+    print("Reconstruction complete.")
+
     error = reconstruction_fbp - image2
     print('FBP rms reconstruction error: %.3g' % np.sqrt(np.mean(error ** 2)))
     rerror = 'FBP rms reconstruction error: %.3g' % np.sqrt(np.mean(error ** 2))
