@@ -10,20 +10,34 @@ window = Tk()
 window.geometry("700x800")
 window.title("CT Scanner")
 
-Label(window, text="Select an image from the list below. Then hit Transform", font=("Ariel", 12), fg="blue").grid(row=0)
+Label(window, text="Select an image from the list below.", font=("Ariel", 12), fg="blue").grid(row=0)
+Label(window, text="Select the scale.", font=("Ariel", 12), fg="blue").grid(row=0, column=1)
+Label(window, text="Then hit Simulate", font=("Ariel", 12), fg="blue").grid(row=0, column=3)
 
 this = "Image1.png"
+scale = 1
 def iValue(value):
     global this
     this = value+".png"
     print("You have selected " + this)
 
+def sValue(value):
+    global scale
+    scale = value
+    print(scale)
+
 iList = ["SheppLogan_Phantom", "Image1", "Image2", "Image3", "Image4", "Image5", "test2"]
-var=StringVar()
-var.set("Image1")
-set1 = OptionMenu(window, var, *iList, command=iValue)
+sList = [1,2,3,4,5,6,7,8,9,10]
+var1=StringVar()
+var1.set("Image1")
+var2=StringVar()
+var2.set("1")
+set1 = OptionMenu(window, var1, *iList, command=iValue)
 set1.configure(font=("Ariel"))
 set1.grid(row=1, column=0)
+set2 = OptionMenu(window, var2, *sList, command=sValue)
+set2.configure(font=("Ariel"))
+set2.grid(row=1, column=1)
 
 fig = Figure(figsize=(7, 7))
 canvas = FigureCanvasTkAgg(fig, master=window)
@@ -82,6 +96,6 @@ def plot():
     canvas.draw()
 
 button1 = Button(window, text="Simulate", bg="red", command=plot)
-button1.grid(row=1, column=2)
+button1.grid(row=1, column=3)
 
 window.mainloop()
